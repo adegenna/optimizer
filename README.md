@@ -27,5 +27,5 @@ cd [/PATH/TO/root_finding]/build
 ./ex_var2d_func1d
 ```
 
-![](https://github.com/adegenna/root_finding/blob/master/figs/optimizer.png)
+![](https://github.com/adegenna/optimizer/blob/master/figs/optimizer.png)
 *(a) Gradient descent, (b) gradient descent with momentum, (c) simulated annealing*
