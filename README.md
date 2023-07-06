@@ -1,3 +1,5 @@
+![unittests](https://github.com/adegenna/optimizer/actions/workflows/unit_tests.yml/badge.svg)
+
 Library for optimization algorithms.
 
 Copyright 2023 by Anthony M. DeGennaro (ISC License).
