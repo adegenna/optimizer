@@ -219,7 +219,7 @@ TEST_F( Function2dTest , testSwarm ) {
     auto lambda_isDone    = [](const std::vector<std::vector<float>>& x) -> bool { return is_done(x); };
 
     PartSwarmParams p;
-    p.n_swarm_ = 16;
+    p.n_swarm_ = 128;
     p.is_done_ = lambda_isDone;
     p.draw_random_state_ = lambda_randState;
     p.draw_random_vel_   = lambda_randVel;
