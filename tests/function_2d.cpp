@@ -54,6 +54,29 @@ float p( float E_x , float E_xnew , float T ) {
 }
 
 
+std::vector<float> draw_random_state() {
+    std::default_random_engine generator;
+    generator.seed( std::chrono::system_clock::now().time_since_epoch().count() );
+    std::vector<float> x(2);
+    std::uniform_real_distribution<float> distribution( 1 , 2 );
+    x[0] = distribution( generator );
+    x[1] = distribution( generator );
+    return x;
+}
+
+std::vector<float> draw_random_vel() {
+    std::default_random_engine generator;
+    generator.seed( std::chrono::system_clock::now().time_since_epoch().count() );
+    std::vector<float> v(2);
+    std::uniform_real_distribution<float> distribution( -1 , 1 );
+    v[0] = distribution( generator );
+    v[1] = distribution( generator );
+    return v;
+}
+
+bool is_done( const std::vector<std::vector<float>>& x ) {
+    return false;
+}
 
 class Function2dTest: public ::testing::Test {
     protected:
@@ -180,5 +203,42 @@ TEST_F( Function2dTest , testSimulatedAnnealing ) {
 
     EXPECT_LT( err_state , 1.e-1 );
     EXPECT_LT( rf->get_last_cost() , 1e-1 );
+  
+}
+
+
+
+TEST_F( Function2dTest , testSwarm ) {
+
+    auto lambda_cost  = [this](const std::vector<float>& vec) -> float { return func_(vec); };
+    auto scale = 0.1;
+    Function cost = Function( lambda_cost , 2 );
+
+    auto lambda_randState = []() -> std::vector<float> { return draw_random_state(); };
+    auto lambda_randVel   = []() -> std::vector<float> { return draw_random_vel(); };
+    auto lambda_isDone    = [](const std::vector<std::vector<float>>& x) -> bool { return is_done(x); };
+
+    PartSwarmParams p;
+    p.n_swarm_ = 16;
+    p.is_done_ = lambda_isDone;
+    p.draw_random_state_ = lambda_randState;
+    p.draw_random_vel_   = lambda_randVel;
+    p.w_     = 0.2;
+    p.phi_p_ = 0.2;
+    p.phi_g_ = 0.8;
+
+    OptimizerParams params = { .type = OptimizerParams::Type::ParticleSwarm,
+            .cost_function = cost,
+            .maxIters = 100,
+            .part_swarm_params = p };
+
+    auto rf = FactoryOptimizer::makeOptimizer(params);
+
+    rf->solve();
+    std::vector<float> state = rf->get_last_state();
+    float err_state = std::abs( state[0]-1 ) + std::abs( state[1]-2 );
+
+    EXPECT_LT( err_state , 1.e-2 );
+    EXPECT_LT( rf->get_last_cost() , 1e-2 );
   
 }
