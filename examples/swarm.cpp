@@ -52,9 +52,9 @@ int main() {
     p.is_done_ = lambda_isDone;
     p.draw_random_state_ = lambda_randState;
     p.draw_random_vel_   = lambda_randVel;
-    p.w_     = 0.33;
-    p.phi_p_ = 0.33;
-    p.phi_g_ = 0.33;
+    p.w_     = 0.2;
+    p.phi_p_ = 0.2;
+    p.phi_g_ = 0.8;
 
     OptimizerParams params = { .type = OptimizerParams::Type::ParticleSwarm,
             .cost_function = cost,
