@@ -6,12 +6,18 @@
 #include <cmath>
 #include <chrono> 
 
+// float J( const std::vector<float>& x ) {
+//     return 0.5 * pow( x[0]-1 , 2 ) + pow( x[1] - 2 , 2 );
+// }
+
 float J( const std::vector<float>& x ) {
-    return 0.5 * pow( x[0]-1 , 2 ) + pow( x[1] - 2 , 2 );
+    return 1.0 - 
+            exp( -( pow( x[0]-0.3 , 2 ) + pow( x[1]-0.3 , 2 ) ) / pow(0.2,2) ) -
+            0.5 * exp( -( pow( x[0]-0.7 , 2 ) + pow( x[1]-0.7 , 2 ) ) / pow(0.2,2) );
 }
 
 float annealing_schedule( float k ) {
-    float T_0 = 10.0;
+    float T_0 = 100.0;
     return T_0 / ( k + 1.0 );
 }
 
@@ -21,7 +27,7 @@ std::vector<float> neighbor( const std::vector<float>& x ) {
     generator.seed( std::chrono::system_clock::now().time_since_epoch().count() );
     std::vector<float> x_next;
     for ( int i=0; i<x.size(); i++ ) {
-        std::normal_distribution<float> distribution( x[i] , 0.1 );
+        std::normal_distribution<float> distribution( x[i] , 0.2 );
         x_next.push_back( distribution(generator) );
     }
     return x_next;
@@ -35,7 +41,7 @@ float p( float E_x , float E_xnew , float T ) {
 int main() {
 
     auto lambda_cost  = [](const std::vector<float>& vec) -> float { return J(vec); };
-    std::vector<float> x0 = { 0.5 , 1 };
+    std::vector<float> x0 = { 0.9 , 0.9 };
     Function cost( lambda_cost , 2 );
 
     auto lambda_ann   = [](float k) -> float { return annealing_schedule(k); };
@@ -49,7 +55,7 @@ int main() {
     OptimizerParams params = { .type = OptimizerParams::Type::SimulatedAnnealing,
             .cost_function = cost,
             .x0 = x0,
-            .maxIters = 100,
+            .maxIters = 200,
             .sim_ann_params = p };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);
