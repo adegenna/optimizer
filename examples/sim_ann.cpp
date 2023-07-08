@@ -51,11 +51,11 @@ int main() {
     p.f_annealing_       = lambda_ann;
     p.f_random_neighbor_ = lambda_neigh;
     p.prob_accept_       = lambda_p;
+    p.maxIters_          = 200;
+    p.x0_                = x0;
 
     OptimizerParams params = { .type = OptimizerParams::Type::SimulatedAnnealing,
             .cost_function = cost,
-            .x0 = x0,
-            .maxIters = 200,
             .sim_ann_params = p };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);

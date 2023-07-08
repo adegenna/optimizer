@@ -106,10 +106,13 @@ TEST_F( Function2dTest , testNewtonRhapson ) {
     auto lambda_D2cost = [this](const std::vector<float>& vec) -> Eigen::MatrixXd { return Hfunc_(vec); };
     Function cost = Function( lambda_cost , lambda_Dcost , lambda_D2cost , 2 );
 
+    NewtRhapParams nrp;
+    nrp.x0_       = x0_;
+    nrp.maxIters_ = 32;
+
     OptimizerParams params = { .type = OptimizerParams::Type::NewtonRaphson,
             .cost_function = cost,
-            .x0 = x0_,
-            .maxIters = 32 };
+            .nr_params     = nrp };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);
 
@@ -127,14 +130,16 @@ TEST_F( Function2dTest , testGradientDescent ) {
 
     auto lambda_cost  = [this](const std::vector<float>& vec) -> float { return func_(vec); };
     auto lambda_Dcost = [this](const std::vector<float>& vec) -> Eigen::MatrixXd { return Dfunc_(vec); };
-    auto scale = 0.1;
     Function cost = Function( lambda_cost , lambda_Dcost , 2 );
+
+    GradDesParams gdp;
+    gdp.maxIters_    = 128;
+    gdp.scale_       = 0.1;
+    gdp.x0_          = x0_;
 
     OptimizerParams params = { .type = OptimizerParams::Type::GradientDescent,
             .cost_function = cost,
-            .x0 = x0_,
-            .maxIters = 128,
-            .scale = scale};
+            .gd_params     = gdp };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);
 
@@ -152,15 +157,17 @@ TEST_F( Function2dTest , testGradientDescentMomentum ) {
 
     auto lambda_cost  = [this](const std::vector<float>& vec) -> float { return func_(vec); };
     auto lambda_Dcost = [this](const std::vector<float>& vec) -> Eigen::MatrixXd { return Dfunc_(vec); };
-    auto scale = 0.1;
     Function cost = Function( lambda_cost , lambda_Dcost , 2 );
+
+    GradDesMomParams gdmp;
+    gdmp.maxIters_   = 128;
+    gdmp.momentum_   = 0.1;
+    gdmp.scale_      = 0.1;
+    gdmp.x0_         = x0_;
 
     OptimizerParams params = { .type = OptimizerParams::Type::GradientDescentMomentum,
             .cost_function = cost,
-            .x0 = x0_,
-            .maxIters = 128,
-            .scale = scale,
-            .momentum = 0.1 };
+            .gdm_params    = gdmp };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);
 
@@ -178,21 +185,21 @@ TEST_F( Function2dTest , testGradientDescentMomentum ) {
 TEST_F( Function2dTest , testSimulatedAnnealing ) {
 
     auto lambda_cost  = [this](const std::vector<float>& vec) -> float { return func_(vec); };
-    auto scale = 0.1;
     Function cost = Function( lambda_cost , 2 );
 
     auto lambda_ann   = [this](float k) -> float { return ann_(k); };
     auto lambda_neigh = [this](const std::vector<float>& vec) -> std::vector<float> { return f_neighbor_(vec); };
     auto lambda_p     = [this](float ex,float enew,float T) -> float { return f_p_(ex,enew,T); };
+    
     SimAnnParams psa;
     psa.f_annealing_       = lambda_ann;
     psa.f_random_neighbor_ = lambda_neigh;
     psa.prob_accept_       = lambda_p;
+    psa.maxIters_          = 256;
+    psa.x0_                = x0_;
 
     OptimizerParams params = { .type = OptimizerParams::Type::SimulatedAnnealing,
             .cost_function = cost,
-            .x0 = x0_,
-            .maxIters = 256,
             .sim_ann_params = psa };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);
@@ -211,7 +218,6 @@ TEST_F( Function2dTest , testSimulatedAnnealing ) {
 TEST_F( Function2dTest , testSwarm ) {
 
     auto lambda_cost  = [this](const std::vector<float>& vec) -> float { return func_(vec); };
-    auto scale = 0.1;
     Function cost = Function( lambda_cost , 2 );
 
     auto lambda_randState = []() -> std::vector<float> { return draw_random_state(); };
@@ -226,10 +232,10 @@ TEST_F( Function2dTest , testSwarm ) {
     p.w_     = 0.2;
     p.phi_p_ = 0.2;
     p.phi_g_ = 0.8;
+    p.maxIters_ = 100;
 
     OptimizerParams params = { .type = OptimizerParams::Type::ParticleSwarm,
             .cost_function = cost,
-            .maxIters = 100,
             .part_swarm_params = p };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);

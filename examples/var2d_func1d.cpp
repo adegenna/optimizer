@@ -23,12 +23,15 @@ int main() {
     auto scale = 0.1;
     Function cost( lambda_cost , lambda_Dcost , 2 );
 
+    GradDesMomParams p;
+    p.x0_       = x0;
+    p.maxIters_ = 16;
+    p.scale_    = scale;
+    p.momentum_ = 0.7;
+
     OptimizerParams params = { .type = OptimizerParams::Type::GradientDescentMomentum,
             .cost_function = cost,
-            .x0 = x0,
-            .maxIters = 16,
-            .scale = scale,
-            .momentum = 0.7 };
+            .gdm_params    = p };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);
     

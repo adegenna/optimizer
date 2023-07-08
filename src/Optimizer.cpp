@@ -6,9 +6,9 @@
 
 void NewtonRhapson::solve() {
 
-    auto x = x0_;
+    auto x = p_.x0_;
     solver_data_->push_back( x , cost_.eval(x) );
-    for ( int i=0; i<maxIters_; i++ ) {
+    for ( int i=0; i<p_.maxIters_; i++ ) {
         Eigen::VectorXd b   = cost_.H(x).transpose() * cost_.J(x);
         Eigen::MatrixXd HTH = cost_.H(x).transpose() * cost_.H(x);
         Eigen::VectorXd dx  = HTH.ldlt().solve( -b );
@@ -23,10 +23,10 @@ void NewtonRhapson::solve() {
 
 void GradientDescent::solve() {
 
-    auto x = x0_;
+    auto x = p_.x0_;
     solver_data_->push_back( x , cost_.eval(x) );
-    for ( int i=0; i<maxIters_; i++ ) {
-        Eigen::VectorXd dx = -cost_.J(x) * scale_;
+    for ( int i=0; i<p_.maxIters_; i++ ) {
+        Eigen::VectorXd dx = -cost_.J(x) * p_.scale_;
         for ( int j=0; j<x.size(); j++ ){
             x[j] += dx(j);
         }
@@ -39,13 +39,13 @@ void GradientDescentMomentum::solve() {
 
     int n = 1;
     int d = cost_.get_dimn();
-    auto x = x0_;
+    auto x = p_.x0_;
     solver_data_->push_back( x , cost_.eval(x) );
     Eigen::MatrixXd J_prev = Eigen::MatrixXd::Zero(n,d);
     Eigen::MatrixXd J_i    = cost_.J(x).transpose();
-    for ( int i=0; i<maxIters_; i++ ) {
-        Eigen::MatrixXd J_avg = weight_history_ * J_prev + J_i;
-        Eigen::VectorXd dx = -J_avg.transpose() * scale_;
+    for ( int i=0; i<p_.maxIters_; i++ ) {
+        Eigen::MatrixXd J_avg = p_.momentum_ * J_prev + J_i;
+        Eigen::VectorXd dx = -J_avg.transpose() * p_.scale_;
         for ( int j=0; j<x.size(); j++ ){
             x[j] += dx(j);
         }
@@ -58,8 +58,8 @@ void GradientDescentMomentum::solve() {
 
 void SimulatedAnnealing::solve() {
 
-    auto x = x0_;
-    for ( int i=0; i<maxIters_; i++ ) {
+    auto x = sim_ann_params_.x0_;
+    for ( int i=0; i<sim_ann_params_.maxIters_; i++ ) {
         double T   = sim_ann_params_.f_annealing_( (float)i );
         auto x_new = sim_ann_params_.f_random_neighbor_( x );
         auto cost_x   = cost_.eval(x);
@@ -106,7 +106,7 @@ void ParticleSwarm::set_initial_data_() {
 void ParticleSwarm::solve() {
 
     int iter = 1;
-    while( ( params_.is_done_(x_) == false ) && ( iter < maxIters_ ) ) {
+    while( ( params_.is_done_(x_) == false ) && ( iter < params_.maxIters_ ) ) {
         solver_data_->resize_plus_one();
         for ( int i=0; i<params_.n_swarm_; i++ ) {
             for ( int j=0; j<x_[0].size(); j++ ) {
