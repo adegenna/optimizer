@@ -55,10 +55,10 @@ int main() {
     p.w_     = 0.2;
     p.phi_p_ = 0.2;
     p.phi_g_ = 0.8;
-
+    p.maxIters_ = 200;
+    
     OptimizerParams params = { .type = OptimizerParams::Type::ParticleSwarm,
             .cost_function = cost,
-            .maxIters = 200,
             .part_swarm_params = p };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);

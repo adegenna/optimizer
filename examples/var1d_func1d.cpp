@@ -28,10 +28,13 @@ int main() {
     auto lambda_D2cost = [](const std::vector<float>& vec) -> Eigen::MatrixXd { return D2J(vec); };
     Function cost = Function( lambda_cost , lambda_Dcost , lambda_D2cost , 1 );
 
+    NewtRhapParams p;
+    p.maxIters_ = 8;
+    p.x0_       = x0;
+
     OptimizerParams params = { .type = OptimizerParams::Type::NewtonRaphson,
                                 .cost_function = cost,
-                                .x0 = x0,
-                                .maxIters = 8 };
+                                .nr_params     = p };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);
 

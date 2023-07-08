@@ -48,10 +48,13 @@ TEST_F( Function1dTest , testNewtonRhapson ) {
     auto lambda_D2cost = [this](const std::vector<float>& vec) -> Eigen::MatrixXd { return D2func_(vec); };
     Function cost = Function( lambda_cost , lambda_Dcost , lambda_D2cost , 1 );
 
+    NewtRhapParams nrp;
+    nrp.maxIters_ = 8;
+    nrp.x0_       = x0_;
+
     OptimizerParams params = { .type = OptimizerParams::Type::NewtonRaphson,
                                 .cost_function = cost,
-                                .x0 = x0_,
-                                .maxIters = 8 };
+                                .nr_params     = nrp };
 
     auto rf = FactoryOptimizer::makeOptimizer(params);
 
