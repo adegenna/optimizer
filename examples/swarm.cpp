@@ -16,7 +16,7 @@ float J( const std::vector<float>& x ) {
 std::vector<float> draw_random_state() {
     std::default_random_engine generator;
     generator.seed( std::chrono::system_clock::now().time_since_epoch().count() );
-    std::vector<float> x;
+    std::vector<float> x(2);
     std::uniform_real_distribution<float> distribution( 0 , 1 );
     x[0] = distribution( generator );
     x[1] = distribution( generator );
@@ -26,7 +26,7 @@ std::vector<float> draw_random_state() {
 std::vector<float> draw_random_vel() {
     std::default_random_engine generator;
     generator.seed( std::chrono::system_clock::now().time_since_epoch().count() );
-    std::vector<float> v;
+    std::vector<float> v(2);
     std::uniform_real_distribution<float> distribution( -1 , 1 );
     v[0] = distribution( generator );
     v[1] = distribution( generator );

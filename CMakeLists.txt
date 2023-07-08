@@ -50,7 +50,7 @@ add_executable( ex_sim_ann
 )
 
 add_executable( swarm
-  examples/sim_ann.cpp
+  examples/swarm.cpp
   src/Function.hpp
   src/Optimizer.cpp
   src/FactoryOptimizer.cpp

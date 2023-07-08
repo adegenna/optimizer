@@ -45,7 +45,7 @@ class DataOptimizer_ParticleMethod : public DataOptimizer {
 
     public:
 
-        DataOptimizer_ParticleMethod() { history_state_.reserve(1); history_cost_.reserve(1); };
+        DataOptimizer_ParticleMethod() { history_state_.resize(1); history_cost_.resize(1); };
         std::vector<float> get_last_state( );
         float get_last_cost( );
         void output_history( const std::string outFileName );

@@ -83,6 +83,7 @@ void ParticleSwarm::set_initial_data_() {
     x_.resize( params_.n_swarm_ );
     vel_.resize( params_.n_swarm_ );
     p_.resize( params_.n_swarm_ );
+    J_p_.resize( params_.n_swarm_ );
     for ( int i=0; i<params_.n_swarm_; i++ ) {
         x_[i]   = params_.draw_random_state_();
         vel_[i] = params_.draw_random_vel_();
@@ -127,6 +128,7 @@ void ParticleSwarm::solve() {
             }
             solver_data_->push_back( x_[i] , J_p_[i] );
         }
+        iter += 1;
     }
 
 }
