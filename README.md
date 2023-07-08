@@ -31,3 +31,6 @@ cd [/PATH/TO/root_finding]/build
 
 ![](https://github.com/adegenna/optimizer/blob/master/figs/optimizer.png)
 *(a) Gradient descent, (b) gradient descent with momentum, (c) simulated annealing*
+
+![](https://github.com/adegenna/optimizer/blob/master/figs/swarm.png)
+*Swarm optimization over 4 epochs*

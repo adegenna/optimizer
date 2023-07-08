@@ -12,6 +12,8 @@ std::unique_ptr<Optimizer> FactoryOptimizer::makeOptimizer( const OptimizerParam
             return std::make_unique<GradientDescentMomentum>(params.cost_function, params.x0, params.maxIters, params.scale, params.momentum);
         case OptimizerParams::Type::SimulatedAnnealing:
             return std::make_unique<SimulatedAnnealing>(params.cost_function, params.x0, params.maxIters, params.sim_ann_params);
+        case OptimizerParams::Type::ParticleSwarm:
+            return std::make_unique<ParticleSwarm>(params.cost_function, params.maxIters, params.part_swarm_params);
 
     }
     return nullptr;

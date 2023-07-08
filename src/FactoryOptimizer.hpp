@@ -7,7 +7,7 @@
 #include <unordered_map>
 
 struct OptimizerParams {
-    enum class Type { NewtonRaphson, GradientDescent , GradientDescentMomentum , SimulatedAnnealing };
+    enum class Type { NewtonRaphson, GradientDescent , GradientDescentMomentum , SimulatedAnnealing , ParticleSwarm };
     Type type;
     Function cost_function;
     std::vector<float> x0;
@@ -15,6 +15,7 @@ struct OptimizerParams {
     float scale;
     float momentum;
     SimAnnParams sim_ann_params;
+    PartSwarmParams part_swarm_params;
 };
 
 

@@ -26,6 +26,7 @@ add_executable( ex_var1d_func1d
   src/FactoryOptimizer.cpp
   src/Data.cpp
   src/SimAnnParams.hpp
+  src/PartSwarmParams.hpp
 )
 
 add_executable( ex_var2d_func1d
@@ -35,6 +36,7 @@ add_executable( ex_var2d_func1d
   src/FactoryOptimizer.cpp
   src/Data.cpp
   src/SimAnnParams.hpp
+  src/PartSwarmParams.hpp
 )
 
 add_executable( ex_sim_ann
@@ -44,8 +46,18 @@ add_executable( ex_sim_ann
   src/FactoryOptimizer.cpp
   src/Data.cpp
   src/SimAnnParams.hpp
+  src/PartSwarmParams.hpp
 )
 
+add_executable( swarm
+  examples/swarm.cpp
+  src/Function.hpp
+  src/Optimizer.cpp
+  src/FactoryOptimizer.cpp
+  src/Data.cpp
+  src/SimAnnParams.hpp
+  src/PartSwarmParams.hpp
+)
 
 add_executable( testall 
   src/Function.hpp
