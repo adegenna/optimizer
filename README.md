@@ -15,7 +15,7 @@ sudo apt-get install libgtest-dev libeigen3-dev
 **Installation**
 
 ```sh
-cd [/PATH/TO/root_finding]
+cd [/PATH/TO/optimizer]
 mkdir build
 cd build
 cmake ../
@@ -25,7 +25,7 @@ make
 **Example Driver**
 
 ```sh
-cd [/PATH/TO/root_finding]/build
+cd [/PATH/TO/optimizer]/build
 ./ex_var2d_func1d
 ```
 
