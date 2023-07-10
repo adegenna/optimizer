@@ -37,7 +37,7 @@ cd [/PATH/TO/optimizer]/build
 
 **Output**
 
-Results are written to a text file (name specified by the user). For gradient descent and simulated annealing, the output structure is this:
+Results are written to a text file using `Optimizer::output_solver_history( string output_file_name )`. For gradient descent and simulated annealing, the output structure is this:
 
 ```sh
 ( x , cost(x) ) : 
@@ -48,7 +48,7 @@ x_21 , x_22 , [...] , x_2d ; C_2
 x_N1 , x_N2 , [...] , x_Nd ; C_d
 ```
 
-where d is the parameter space dimension and N is the number of epochs.
+where d is the parameter space dimension, N is the total number of cost function evaluations, x_ij is the j-th element of the parameter space location x_i, and C_i is the computed cost of x_i. In other words: each line contains a point in parameter space, and its associated cost.
 
 For particle swarm, an ensemble of N particles is computed and tracked every epoch, so the output structure is grouped into epoch ``blocks'', i.e.:
 
